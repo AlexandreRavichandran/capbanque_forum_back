@@ -66,11 +66,23 @@ class User
      */
     private $subcomments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Communication::class, mappedBy="sender", orphanRemoval=true)
+     */
+    private $sender;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Communication::class, mappedBy="recipient", orphanRemoval=true)
+     */
+    private $recipient;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->subcomments = new ArrayCollection();
+        $this->sender = new ArrayCollection();
+        $this->recipient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -234,6 +246,66 @@ class User
             // set the owning side to null (unless already changed)
             if ($subcomment->getUser() === $this) {
                 $subcomment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Communication[]
+     */
+    public function getSender(): Collection
+    {
+        return $this->sender;
+    }
+
+    public function addSender(Communication $sender): self
+    {
+        if (!$this->sender->contains($sender)) {
+            $this->sender[] = $sender;
+            $sender->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSender(Communication $sender): self
+    {
+        if ($this->sender->removeElement($sender)) {
+            // set the owning side to null (unless already changed)
+            if ($sender->getSender() === $this) {
+                $sender->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Communication[]
+     */
+    public function getRecipient(): Collection
+    {
+        return $this->recipient;
+    }
+
+    public function addRecipient(Communication $recipient): self
+    {
+        if (!$this->recipient->contains($recipient)) {
+            $this->recipient[] = $recipient;
+            $recipient->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipient(Communication $recipient): self
+    {
+        if ($this->recipient->removeElement($recipient)) {
+            // set the owning side to null (unless already changed)
+            if ($recipient->getRecipient() === $this) {
+                $recipient->setRecipient(null);
             }
         }
 
