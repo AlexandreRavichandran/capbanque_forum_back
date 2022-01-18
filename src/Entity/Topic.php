@@ -7,9 +7,15 @@ use App\Repository\TopicRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations={"post"},
+ *     itemOperations={"get", "delete","put"},
+ *  normalizationContext={"groups"={"topicId"}}
+ * )
  * @ORM\Entity(repositoryClass=TopicRepository::class)
  */
 class Topic
@@ -23,16 +29,19 @@ class Topic
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"userId", "topicId", "categorieId"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"topicId", "categorieId"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"userId", "topicId"})
      */
     private $created_at;
 
@@ -44,6 +53,7 @@ class Topic
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="topics")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"topicId", "categorieId"})
      */
     private $user_id;
 
@@ -55,6 +65,7 @@ class Topic
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="topic", orphanRemoval=true)
+     * @Groups({"topicId", "categorieId"})
      */
     private $comments;
 

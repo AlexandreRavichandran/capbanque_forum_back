@@ -7,9 +7,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * normalizationContext={"groups"={"userId"}}
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User
@@ -23,41 +26,49 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("userId")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("userId")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("userId")
      */
     private $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("userId")
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"userId", "topicId"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("userId")
      */
     private $RIB;
 
     /**
      * @ORM\OneToMany(targetEntity=Topic::class, mappedBy="user_id", orphanRemoval=true)
+     * @Groups("userId")
      */
     private $topics;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
+     * @Groups("userId")
      */
     private $comments;
 

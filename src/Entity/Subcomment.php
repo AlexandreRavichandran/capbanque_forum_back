@@ -5,9 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\SubcommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(collectionOperations={"post"},
+ *     itemOperations={"get","delete","put"})
  * @ORM\Entity(repositoryClass=SubcommentRepository::class)
  */
 class Subcomment
@@ -21,11 +23,13 @@ class Subcomment
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"topicId"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"topicId"})
      */
     private $created_at;
 
@@ -42,6 +46,7 @@ class Subcomment
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="subcomments")
+     * @Groups({"topicId"})
      */
     private $user;
 

@@ -21,8 +21,8 @@ class AppFixtures extends Fixture
         $userTab = [];
         for ($i = 0; $i < 10; $i++) {
             $user = new User();
-            $user->setLastname($faker->name);
-            $user->setFirstname($faker->name);
+            $user->setLastname($faker->lastName);
+            $user->setFirstname($faker->firstName);
             $user->setMail($faker->email);
             $user->setAddress($faker->address);
             $user->setUsername($faker->userName);
@@ -60,7 +60,7 @@ class AppFixtures extends Fixture
 
             for ($j = 0; $j < 10; $j++) {
                 $topic = new Topic();
-                $topic->setTitle($faker->name);  
+                $topic->setTitle($faker->word);  
                 $topic->setContent($faker->text); 
                 $topic->setCategory($category);
                 $topic->setCreatedAt(new \DateTimeImmutable());
