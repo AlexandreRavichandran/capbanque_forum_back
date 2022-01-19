@@ -14,13 +14,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\HasLifecycleCallbacks
  * @ApiResource(
  * itemOperations= {
- *      "get" = {
- *          "normalization_context" = {"groups" = {"topicId"}}
+ *      "get" : {
+ *          "normalization_context" : {"groups" : {"topicId"}}
  *      },
  *      "delete", "put"
  * },
  * collectionOperations= {
- *      "get",
+ *      "get": {
+ *          "normalization_context" : {"groups" : {"topics"}}
+ *      },
  *      "post" }
  * )
  * @ORM\Entity(repositoryClass=TopicRepository::class)
@@ -31,24 +33,25 @@ class Topic
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"topics","categorieId"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"userId", "topicId", "categorieId"})
+     * @Groups({"userId", "topicId", "categorieId","topics"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"topicId", "categorieId""})
+     * @Groups({"topicId", "categorieId","topics"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"userId", "topicId"})
+     * @Groups({"userId", "topicId","topics","categorieId"})
      */
     private $created_at;
 
@@ -60,19 +63,20 @@ class Topic
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="topics")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"topicId", "categorieId"})
+     * @Groups({"categorieId", "topics","topicId"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="topic")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"topics"})
      */
     private $category;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="topic", orphanRemoval=true)
-     * @Groups({"topicId", "categorieId"})
+     * @Groups({"categorieId","topics", "topicId"})
      */
     private $comments;
 
@@ -155,12 +159,12 @@ class Topic
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user_id): self
     {
         $this->user = $user_id;
 

@@ -55,7 +55,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"userId", "topicId"})
+     * @Groups({"userId", "topicId", "topics","categorieId"})
      */
     private $username;
 
@@ -190,7 +190,7 @@ class User
     {
         if (!$this->topics->contains($topic)) {
             $this->topics[] = $topic;
-            $topic->setUserId($this);
+            $topic->setUser($this);
         }
 
         return $this;
@@ -200,8 +200,8 @@ class User
     {
         if ($this->topics->removeElement($topic)) {
             // set the owning side to null (unless already changed)
-            if ($topic->getUserId() === $this) {
-                $topic->setUserId(null);
+            if ($topic->getUser() === $this) {
+                $topic->setUser(null);
             }
         }
 

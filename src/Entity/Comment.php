@@ -16,8 +16,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={"get","delete","put"},
  *  collectionOperations= {
  *      "get",
- *      "post" = {
- *          "denormalization_context" = {"groups" = {"postComment"}}     
+ *      "post" : {
+ *          "denormalization_context" : {"groups" : {"postComment"}}     
  *          }
  * }      
  * )
@@ -29,7 +29,7 @@ class Comment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"categorieId"})
+     * @Groups({"categorieId","topics"})
      */
     private $id;
 
@@ -53,14 +53,14 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity=Topic::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"topicId","postComment"})
+     * @Groups({"postComment"})
      */
     private $topic;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"postComment"})
+     * @Groups({"postComment","topicId"})
      */
     private $user;
 

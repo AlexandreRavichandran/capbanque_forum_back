@@ -55,17 +55,17 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 10; $i++) {
             $category = new Category();
-            $category->setName($faker->name);  
+            $category->setName($faker->word);  
             $manager->persist($category);
 
             for ($j = 0; $j < 10; $j++) {
                 $topic = new Topic();
-                $topic->setTitle($faker->word);  
+                $topic->setTitle($faker->sentence(mt_rand(3,8)));  
                 $topic->setContent($faker->text); 
                 $topic->setCategory($category);
                 $topic->setCreatedAt(new \DateTimeImmutable());
                 $topic->setUpdatedAt(new \DateTimeImmutable());
-                $topic->setUserId($userTab[$j]);
+                $topic->setUser($userTab[$j]);
                 $manager->persist($topic);
 
                 for ($h = 0; $h < 10; $h++) {

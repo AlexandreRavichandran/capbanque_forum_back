@@ -10,8 +10,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\HasLifecycleCallbacks
  * @ApiResource(collectionOperations= {
- *      "post" = {
- *          "denormalization_context" = {"groups" = {"postSubComment"}}     
+ *      "post" : {
+ *          "denormalization_context" : {"groups" : {"postSubComment"}}     
  *          }
  * }  ,
  *     itemOperations={"get","delete","put"})

@@ -13,15 +13,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ApiResource(
  * itemOperations= {
- *      "get" = {
- *          "normalization_context" = {"groups" = {"categorieId"}}
+ *      "get" : {
+ *          "normalization_context" : {"groups" :{"categorieId"}}
  *      },
  *      "delete", "put"
  * 
  * },
  * collectionOperations= {
- *      "get" = {
- *          "normalization_context" = {"groups" = {"categories"}
+ *      "get" : {
+ *          "normalization_context" : {"groups" : {"categories"}
  *          }
  *      }
  * }
@@ -34,12 +34,13 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"categories"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"categories", "categorieId"})
+     * @Groups({"categories", "categorieId", "topics"})
      */
     private $name;
 
