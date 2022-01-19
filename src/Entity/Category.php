@@ -23,8 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "get" = {
  *          "normalization_context" = {"groups" = {"categories"}
  *          }
- *      },
- *      "post"
+ *      }
  * }
  * )
  * @ORM\Entity(repositoryClass=CategoryRepository::class)

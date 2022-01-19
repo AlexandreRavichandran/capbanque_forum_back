@@ -8,7 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(collectionOperations={"post"},
+ * @ORM\HasLifecycleCallbacks
+ * @ApiResource(collectionOperations= {
+ *      "post" = {
+ *          "denormalization_context" = {"groups" = {"postSubComment"}}     
+ *          }
+ * }  ,
  *     itemOperations={"get","delete","put"})
  * @ORM\Entity(repositoryClass=SubcommentRepository::class)
  */
@@ -23,7 +28,7 @@ class Subcomment
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"topicId"})
+     * @Groups({"topicId","postSubComment"})
      */
     private $content;
 
@@ -41,14 +46,36 @@ class Subcomment
     /**
      * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="subcomments")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"postSubComment"})
      */
     private $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="subcomments")
-     * @Groups({"topicId"})
+     * @Groups({"topicId","postSubComment"})
      */
     private $user;
+
+
+     /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
 
     public function getId(): ?int
     {

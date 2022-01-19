@@ -11,7 +11,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- * normalizationContext={"groups"={"userId"}}
+ * itemOperations= {
+ *      "get" = {
+ *          "normalization_context" = {"groups" = {"userId"}}
+ *      },
+ *      "delete", "put"
+ * },
  * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
@@ -26,7 +31,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("userId")
+     * @Groups({"userId"})
      */
     private $lastname;
 
@@ -61,8 +66,8 @@ class User
     private $RIB;
 
     /**
-     * @ORM\OneToMany(targetEntity=Topic::class, mappedBy="user_id", orphanRemoval=true)
-     * @Groups("userId")
+     * @ORM\OneToMany(targetEntity=Topic::class, mappedBy="user", orphanRemoval=true)
+     * @Groups({"userId"})
      */
     private $topics;
 

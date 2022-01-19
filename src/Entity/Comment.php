@@ -11,8 +11,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
- * @ApiResource(collectionOperations={"post"},
- *     itemOperations={"get","delete","put"}      
+ * @ORM\HasLifecycleCallbacks
+ * @ApiResource(
+ *     itemOperations={"get","delete","put"},
+ *  collectionOperations= {
+ *      "get",
+ *      "post" = {
+ *          "denormalization_context" = {"groups" = {"postComment"}}     
+ *          }
+ * }      
  * )
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  */
@@ -28,7 +35,7 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"userId","topicId"})
+     * @Groups({"userId","topicId", "postComment"})
      */
     private $content;
 
@@ -46,13 +53,14 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity=Topic::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"topicId","postComment"})
      */
     private $topic;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"topicId"})
+     * @Groups({"postComment"})
      */
     private $user;
 
@@ -61,6 +69,26 @@ class Comment
      * @Groups({"topicId"})
      */
     private $subcomments;
+
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->updated_at = new \DateTimeImmutable();
+    }
 
     public function __construct()
     {

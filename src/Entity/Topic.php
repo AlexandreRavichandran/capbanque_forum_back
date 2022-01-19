@@ -11,10 +11,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
+ * @ORM\HasLifecycleCallbacks
  * @ApiResource(
- *      collectionOperations={"post"},
- *     itemOperations={"get", "delete","put"},
- *  normalizationContext={"groups"={"topicId"}}
+ * itemOperations= {
+ *      "get" = {
+ *          "normalization_context" = {"groups" = {"topicId"}}
+ *      },
+ *      "delete", "put"
+ * },
+ * collectionOperations= {
+ *      "get",
+ *      "post" }
  * )
  * @ORM\Entity(repositoryClass=TopicRepository::class)
  */
@@ -35,7 +42,7 @@ class Topic
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"topicId", "categorieId"})
+     * @Groups({"topicId", "categorieId""})
      */
     private $content;
 
@@ -55,7 +62,7 @@ class Topic
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"topicId", "categorieId"})
      */
-    private $user_id;
+    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="topic")
@@ -68,6 +75,27 @@ class Topic
      * @Groups({"topicId", "categorieId"})
      */
     private $comments;
+
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
 
     public function __construct()
     {
@@ -129,12 +157,12 @@ class Topic
 
     public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
     public function setUserId(?User $user_id): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user_id;
 
         return $this;
     }
