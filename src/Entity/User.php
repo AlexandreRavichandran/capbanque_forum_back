@@ -26,6 +26,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"postTopic"})
      */
     private $id;
 
@@ -55,7 +56,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"userId", "topicId", "topics","categorieId"})
+     * @Groups({"userId", "topicId", "topics","categorieId","postTopic"})
      */
     private $username;
 

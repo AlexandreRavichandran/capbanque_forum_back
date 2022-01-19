@@ -23,7 +23,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "get": {
  *          "normalization_context" : {"groups" : {"topics"}}
  *      },
- *      "post" }
+ *      "post": {
+ *          "denormalization_context" : {"groups" : {"postTopic"}}
+ *      } }
  * )
  * @ORM\Entity(repositoryClass=TopicRepository::class)
  */
@@ -39,13 +41,13 @@ class Topic
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"userId", "topicId", "categorieId","topics"})
+     * @Groups({"userId", "topicId", "categorieId","topics","postTopic"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"topicId", "categorieId","topics"})
+     * @Groups({"topicId", "categorieId","topics","postTopic"})
      */
     private $content;
 
@@ -63,7 +65,7 @@ class Topic
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="topics")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"categorieId", "topics","topicId"})
+     * @Groups({"categorieId", "topics","topicId","postTopic"})
      */
     private $user;
 
