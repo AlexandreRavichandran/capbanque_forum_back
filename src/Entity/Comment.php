@@ -41,7 +41,7 @@ class Comment
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"userId","topicId"})
+     * @Groups({"userId","topicId","categorieId"})
      */
     private $created_at;
 
@@ -60,7 +60,7 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"postComment","topicId"})
+     * @Groups({"postComment","topicId","categorieId"})
      */
     private $user;
 

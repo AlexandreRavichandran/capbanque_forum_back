@@ -35,7 +35,7 @@ class Topic
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"topics","categorieId"})
+     * @Groups({"topics","categorieId","topicId"})
      */
     private $id;
 
