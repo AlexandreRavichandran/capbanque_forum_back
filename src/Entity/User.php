@@ -61,12 +61,6 @@ class User
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups("userId")
-     */
-    private $RIB;
-
-    /**
      * @ORM\OneToMany(targetEntity=Topic::class, mappedBy="user", orphanRemoval=true)
      * @Groups({"userId"})
      */
@@ -93,6 +87,11 @@ class User
      */
     private $recipient;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Rib::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $rib;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
@@ -100,6 +99,7 @@ class User
         $this->subcomments = new ArrayCollection();
         $this->sender = new ArrayCollection();
         $this->recipient = new ArrayCollection();
+        $this->rib = new Rib($this);
     }
 
     public function getId(): ?int
@@ -167,14 +167,14 @@ class User
         return $this;
     }
 
-    public function getRIB(): ?string
+    public function getRIB(): ?Rib
     {
-        return $this->RIB;
+        return $this->rib;
     }
 
-    public function setRIB(string $RIB): self
+    public function setRIB(Rib $rib): self
     {
-        $this->RIB = $RIB;
+        $this->rib = $rib;
 
         return $this;
     }
