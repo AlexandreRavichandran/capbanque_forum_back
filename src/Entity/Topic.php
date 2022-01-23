@@ -69,10 +69,10 @@ class Topic
      */
     private $user;
 
-    /**
+    /** 
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="topic")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"topics"})
+     * @Groups({"topics","postTopic"})
      */
     private $category;
 

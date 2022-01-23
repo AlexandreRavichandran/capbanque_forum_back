@@ -29,7 +29,7 @@ class Comment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"categorieId","topics"})
+     * @Groups({"categorieId","topics","topicId"})
      */
     private $id;
 

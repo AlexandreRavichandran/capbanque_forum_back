@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Communication;
+use App\Entity\Rib;
 use App\Entity\Subcomment;
 use App\Entity\Topic;
 use DateTime;
@@ -26,7 +27,6 @@ class AppFixtures extends Fixture
             $user->setMail($faker->email);
             $user->setAddress($faker->address);
             $user->setUsername($faker->userName);
-            $user->setRIB("FR".$faker->numberBetween(1000,9999).$faker->numberBetween(1000,9999).$faker->numberBetween(1000,9999).$faker->numberBetween(1000,9999).$faker->numberBetween(1000,9999).$faker->numberBetween(100,999));
             array_push($userTab,$user);
             $manager->persist($user);
         }
